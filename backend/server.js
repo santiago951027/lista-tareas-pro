@@ -5,14 +5,15 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/tasks.js";
 
-app.use("/api/tasks", taskRoutes);
-app.use("/api/auth", authRoutes);
-
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Rutas
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // Ruta de prueba
 app.get("/", (req, res) => {
