@@ -5,11 +5,16 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// Ruta: POST /api/auth/register
+// ✅ Ruta: POST /api/auth/register
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    // Validación de campos
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Todos los campos son obligatorios" });
+    }
+
     // Revisamos si el usuario ya existe
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -41,15 +46,21 @@ router.post("/register", async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error al registrar el usuario" });
+    console.error("❌ Error en el registro:", error.message);
+    res.status(500).json({ message: "Error al registrar el usuario", error: error.message });
   }
 });
 
-// Ruta: POST /api/auth/login
+// ✅ Ruta: POST /api/auth/login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    // Validación de campos
+    if (!email || !password) {
+      return res.status(400).json({ message: "Todos los campos son obligatorios" });
+    }
+
     // Buscamos el usuario
     const user = await User.findOne({ email });
     if (!user) {
@@ -76,7 +87,8 @@ router.post("/login", async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error al iniciar sesión" });
+    console.error("❌ Error en el login:", error.message);
+    res.status(500).json({ message: "Error al iniciar sesión", error: error.message });
   }
 });
 
