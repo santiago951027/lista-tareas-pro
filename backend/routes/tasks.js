@@ -1,11 +1,11 @@
 import express from "express";
 import Task from "../models/Task.js";
-import { protect } from "../middleware/authMiddleware.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // Todas las rutas usan el middleware protect
-router.use(protect);
+router.use(authMiddleware);
 
 // GET /api/tasks → obtener todas las tareas del usuario
 router.get("/", async (req, res) => {
